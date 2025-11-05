@@ -1,0 +1,16 @@
+# 3DS-TACO Configuration File
+# Copy this file to sdmc:/3ds/3ds-taco/config.ini and edit as needed
+
+# WiFi OBD-II Adapter SSID (Network Name)
+ssid=OBDII
+
+# WiFi Password (leave empty if no password)
+password=
+
+# OBD-II Adapter IP Address
+# Default for most ELM327 WiFi adapters is 192.168.0.10
+ip=192.168.0.10
+
+# OBD-II Adapter Port
+# Default for most ELM327 WiFi adapters is 35000
+port=35000

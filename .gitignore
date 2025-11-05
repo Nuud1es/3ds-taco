@@ -1,0 +1,20 @@
+# Build artifacts
+build/
+*.3dsx
+*.elf
+*.smdh
+*.map
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Config files (should use example)
+config.ini
