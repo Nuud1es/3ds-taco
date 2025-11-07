@@ -31,6 +31,35 @@ A Nintendo 3DS homebrew application that displays real-time car telemetry data f
 
 ## Building
 
+### Quick Build (Automated)
+
+The easiest way to build is using the automated build script that downloads and installs all required tools:
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/3ds-taco.git
+cd 3ds-taco
+
+# Run the automated build script
+./build.sh
+```
+
+The script will:
+- Detect your operating system (Linux/macOS/Windows)
+- Download and install devkitPro if not already present
+- Install the 3ds-dev package with all dependencies
+- Compile the application
+- Show you the next steps for installation
+
+**Supported platforms:**
+- Linux (Ubuntu/Debian/Fedora/Arch)
+- macOS (requires Homebrew)
+- Windows (requires MSYS2)
+
+### Manual Build
+
+If you prefer to install tools manually or already have devkitPro installed:
+
 1. Install [devkitPro](https://devkitpro.org/wiki/Getting_Started) with 3DS development tools:
    ```bash
    # On Linux/macOS
