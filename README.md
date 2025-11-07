@@ -7,15 +7,19 @@ A Nintendo 3DS homebrew application that displays real-time car telemetry data f
 ## Features
 
 - **Real-time Telemetry**: Connect to ELM327-compatible OBD-II WiFi adapters
-- **Cassette Futurism UI**: Retro-futuristic interface design
-- **Analog Dials**: Top screen displays MPH and RPM with analog gauges
-- **Comprehensive Data**: Bottom screen shows additional telemetry:
-  - Throttle position
-  - Coolant temperature
-  - Engine load
-  - Intake air temperature
-  - Fuel level
-  - MAF sensor readings
+- **Cassette Futurism UI**: Retro-futuristic interface design with smooth 2D graphics
+- **Analog Dials with Numeric Displays**: Top screen features dual analog gauges showing:
+  - Speed (MPH) with large numeric readout
+  - Engine RPM (x100) with large numeric readout
+  - Animated needles that respond to real-time data
+- **Comprehensive Telemetry Panels**: Bottom screen displays six data panels with values:
+  - Throttle position (%)
+  - Coolant temperature (°F)
+  - Engine load (%)
+  - Intake air temperature (°F)
+  - Fuel level (%)
+  - MAF sensor readings (g/s)
+- **Professional Text Rendering**: Citro2D-powered UI with smooth fonts and labels
 
 ## Requirements
 
@@ -174,12 +178,15 @@ This application works with ELM327-compatible WiFi adapters. Recommended models:
 ### Display Specifications
 - **Top Screen (400x240)**:
   - Two analog dials with cassette futurism styling
-  - Left: Speed (0-140 MPH)
-  - Right: RPM (0-8000 RPM)
+  - Left: Speed (0-140 MPH) with numeric display
+  - Right: RPM (0-8000 RPM) with numeric display
+  - Smooth animated needles using Citro2D
+  - Title bar with connection status indicator
+  - Decorative accent lines
 - **Bottom Screen (320x240)**:
-  - Telemetry data panels
-  - Connection status
-  - Controls information
+  - Six telemetry data panels with labeled values
+  - Connection status and instructions when disconnected
+  - Real-time updating numeric displays
 
 ## Contributing
 
@@ -201,6 +208,7 @@ The developers are not responsible for any damage to your vehicle or 3DS console
 ## Credits
 
 - Built with [libctru](https://github.com/devkitPro/libctru)
+- Graphics powered by [Citro2D](https://github.com/devkitPro/citro2d) and [Citro3D](https://github.com/devkitPro/citro3d)
 - ELM327 protocol documentation
 - Cassette futurism design inspiration from retro computing aesthetics
 

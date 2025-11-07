@@ -1,4 +1,5 @@
 #include <3ds.h>
+#include <citro3d.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,34 +13,28 @@ int main(int argc, char **argv)
 {
     // Initialize services
     gfxInitDefault();
-    consoleInit(GFX_BOTTOM, NULL);
     acInit();
 
-    PrintConsole* bottomScreen = consoleInit(GFX_BOTTOM, NULL);
+    // Initialize UI system (Citro2D/3D)
+    if (!initUI()) {
+        acExit();
+        gfxExit();
+        return 1;
+    }
 
     // Initialize OBD and WiFi systems
     OBDData obdData;
     WiFiConfig wifiConfig;
     initOBDData(&obdData);
 
-    printf("3DS-TACO v%s\n", VERSION);
-    printf("OBD-II WiFi Telemetry\n");
-    printf("====================\n\n");
-
     // Load WiFi configuration
-    if (loadWiFiConfig(&wifiConfig)) {
-        printf("WiFi config loaded\n");
-        printf("SSID: %s\n", wifiConfig.ssid);
-    } else {
-        printf("Using default config\n");
+    if (!loadWiFiConfig(&wifiConfig)) {
+        // Use default config
         strcpy(wifiConfig.ssid, "OBDII");
         strcpy(wifiConfig.password, "");
         wifiConfig.port = 35000;
         strcpy(wifiConfig.ipAddress, "192.168.0.10");
     }
-
-    printf("\nPress START to exit\n");
-    printf("Press A to connect to OBD\n");
 
     bool connected = false;
     int sockfd = -1;
@@ -55,14 +50,10 @@ int main(int argc, char **argv)
             break;
 
         if (kDown & KEY_A && !connected) {
-            printf("\nConnecting to OBD adapter...\n");
             sockfd = connectToOBD(&wifiConfig);
             if (sockfd >= 0) {
                 connected = true;
-                printf("Connected!\n");
                 initOBDConnection(sockfd);
-            } else {
-                printf("Connection failed!\n");
             }
         }
 
@@ -72,12 +63,10 @@ int main(int argc, char **argv)
             lastUpdate = osGetTime();
         }
 
-        // Render UI
+        // Render UI (handles frame begin/end internally)
+        C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
         renderUI(&obdData, connected);
-
-        gfxFlushBuffers();
-        gfxSwapBuffers();
-        gspWaitForVBlank();
+        // C3D_FrameEnd is called inside renderUI
     }
 
     // Cleanup
@@ -85,6 +74,7 @@ int main(int argc, char **argv)
         closesocket(sockfd);
     }
 
+    exitUI();
     acExit();
     gfxExit();
     return 0;
