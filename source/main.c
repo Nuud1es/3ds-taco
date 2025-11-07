@@ -57,6 +57,12 @@ int main(int argc, char **argv)
             }
         }
 
+        // Reset trip statistics
+        if (kDown & KEY_B && connected) {
+            obdData.maxSpeed = 0;
+            obdData.maxRPM = 0;
+        }
+
         // Update telemetry data periodically
         if (connected && (osGetTime() - lastUpdate) > 100) {
             updateOBDData(sockfd, &obdData);

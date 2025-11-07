@@ -17,8 +17,9 @@ A Nintendo 3DS homebrew application that displays real-time car telemetry data f
   - Coolant temperature (°F)
   - Engine load (%)
   - Intake air temperature (°F)
-  - Fuel level (%)
-  - MAF sensor readings (g/s)
+  - Maximum speed for current trip (MPH)
+  - Maximum RPM for current trip
+- **Trip Statistics**: Automatically tracks highest speed and RPM reached
 - **Professional Text Rendering**: Citro2D-powered UI with smooth fonts and labels
 
 ## Requirements
@@ -125,6 +126,7 @@ If you prefer to install tools manually or already have devkitPro installed:
 
 5. **Controls**:
    - **A Button**: Connect to OBD-II adapter
+   - **B Button**: Reset trip statistics (max speed and max RPM)
    - **START**: Exit application
 
 ## Configuration
@@ -185,8 +187,11 @@ This application works with ELM327-compatible WiFi adapters. Recommended models:
   - Decorative accent lines
 - **Bottom Screen (320x240)**:
   - Six telemetry data panels with labeled values
+  - Live data: Throttle, Coolant Temp, Engine Load, Intake Temp
+  - Trip statistics: Max Speed (MPH), Max RPM
   - Connection status and instructions when disconnected
   - Real-time updating numeric displays
+  - Trip reset instruction
 
 ## Contributing
 

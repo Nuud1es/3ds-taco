@@ -22,6 +22,8 @@ typedef struct {
     float maf;
     int fuelLevel;
     int engineLoad;
+    int maxSpeed;       // Trip maximum speed
+    int maxRPM;         // Trip maximum RPM
     bool valid;
 } OBDData;
 

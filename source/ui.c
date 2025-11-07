@@ -270,8 +270,8 @@ void renderBottomScreen(OBDData* data, bool connected) {
         {170, 20, "COOLANT", data->coolantTemp, "F"},
         {20, 90, "ENGINE LOAD", data->engineLoad, "%"},
         {170, 90, "INTAKE", data->intakeTemp, "F"},
-        {20, 160, "FUEL LEVEL", data->fuelLevel, "%"},
-        {170, 160, "MAF", (int)data->maf, "g/s"}
+        {20, 160, "MAX SPEED", data->maxSpeed, "MPH"},
+        {170, 160, "MAX RPM", data->maxRPM, "RPM"}
     };
 
     for (int i = 0; i < 6; i++) {
@@ -301,6 +301,9 @@ void renderBottomScreen(OBDData* data, bool connected) {
 
         C2D_DrawText(&c2dText, C2D_WithColor, textX, textY, 0.5f, 0.7f, 0.7f, COLOR_TEXT);
     }
+
+    // Draw trip reset instruction at bottom
+    drawText(10, BOTTOM_HEIGHT - 18, 0.35f, COLOR_DIAL_MARKS, "Press B to reset trip");
 }
 
 void renderUI(OBDData* data, bool connected) {

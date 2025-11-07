@@ -84,6 +84,11 @@ void updateOBDData(int sockfd, OBDData* data) {
                     int byteA, byteB;
                     sscanf(pidPos + 3, "%02X %02X", &byteA, &byteB);
                     data->rpm = (byteA * 256 + byteB) / 4;
+
+                    // Track maximum RPM for this trip
+                    if (data->rpm > data->maxRPM) {
+                        data->maxRPM = data->rpm;
+                    }
                 }
             }
         }
@@ -94,6 +99,11 @@ void updateOBDData(int sockfd, OBDData* data) {
         value = parseOBDResponse(response, OBD_PID_SPEED);
         if (value >= 0) {
             data->speed = (int)(value * 0.621371); // Convert km/h to mph
+
+            // Track maximum speed for this trip
+            if (data->speed > data->maxSpeed) {
+                data->maxSpeed = data->speed;
+            }
         }
     }
 
