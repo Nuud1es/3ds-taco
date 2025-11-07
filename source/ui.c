@@ -222,11 +222,11 @@ void renderTopScreen(OBDData* data) {
     C2D_DrawRectSolid(20, 50, 0.5f, 360, 2, COLOR_ACCENT);
     C2D_DrawRectSolid(20, 53, 0.5f, 360, 1, COLOR_ACCENT);
 
-    // Draw MPH dial (left side)
-    drawAnalogDial(100, 150, 70, data->speed, 140, "MPH", true);
+    // Draw MPH dial (left side) - use interpolated value for smooth animation
+    drawAnalogDial(100, 150, 70, (int)data->displaySpeed, 140, "MPH", true);
 
-    // Draw RPM dial (right side)
-    drawAnalogDial(300, 150, 70, data->rpm / 100, 80, "RPM x100", true);
+    // Draw RPM dial (right side) - use interpolated value for smooth animation
+    drawAnalogDial(300, 150, 70, (int)(data->displayRPM / 100.0f), 80, "RPM x100", true);
 
     // Draw connection indicator
     if (data->valid) {
@@ -259,17 +259,17 @@ void renderBottomScreen(OBDData* data, bool connected) {
     // Draw telemetry data panels
     char buffer[64];
 
-    // Panel layout (2x3 grid)
+    // Panel layout (2x3 grid) - use interpolated values for smooth display
     struct {
         int x, y;
         const char* label;
         int value;
         const char* unit;
     } panels[] = {
-        {20, 20, "THROTTLE", data->throttle, "%"},
-        {170, 20, "COOLANT", data->coolantTemp, "F"},
-        {20, 90, "ENGINE LOAD", data->engineLoad, "%"},
-        {170, 90, "INTAKE", data->intakeTemp, "F"},
+        {20, 20, "THROTTLE", (int)data->displayThrottle, "%"},
+        {170, 20, "COOLANT", (int)data->displayCoolantTemp, "F"},
+        {20, 90, "ENGINE LOAD", (int)data->displayEngineLoad, "%"},
+        {170, 90, "INTAKE", (int)data->displayIntakeTemp, "F"},
         {20, 160, "MAX SPEED", data->maxSpeed, "MPH"},
         {170, 160, "MAX RPM", data->maxRPM, "RPM"}
     };

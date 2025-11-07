@@ -14,6 +14,7 @@
 #define OBD_PID_ENGINE_LOAD 0x04
 
 typedef struct {
+    // Current sensor readings (targets for interpolation)
     int rpm;
     int speed;
     int throttle;
@@ -22,10 +23,24 @@ typedef struct {
     float maf;
     int fuelLevel;
     int engineLoad;
+
+    // Interpolated display values (smoothed for rendering)
+    float displayRPM;
+    float displaySpeed;
+    float displayThrottle;
+    float displayCoolantTemp;
+    float displayIntakeTemp;
+    float displayEngineLoad;
+
+    // Trip statistics
     int maxSpeed;       // Trip maximum speed
     int maxRPM;         // Trip maximum RPM
+
     bool valid;
 } OBDData;
+
+// Interpolate display values towards sensor readings
+void interpolateOBDData(OBDData* data, float deltaTime);
 
 void initOBDData(OBDData* data);
 void initOBDConnection(int sockfd);

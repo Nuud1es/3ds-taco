@@ -131,5 +131,45 @@ void updateOBDData(int sockfd, OBDData* data) {
         }
     }
 
+    // Query Intake Air Temperature
+    if (queryOBDPID(sockfd, OBD_PID_INTAKE_TEMP, response, sizeof(response)) > 0) {
+        value = parseOBDResponse(response, OBD_PID_INTAKE_TEMP);
+        if (value >= 0) {
+            data->intakeTemp = (value - 40) * 9 / 5 + 32; // Convert to Fahrenheit
+        }
+    }
+
     data->valid = true;
+}
+
+// Smooth interpolation function (exponential moving average)
+static float lerp(float current, float target, float smoothing) {
+    return current + (target - current) * smoothing;
+}
+
+void interpolateOBDData(OBDData* data, float deltaTime) {
+    // Smoothing factor (higher = faster response, lower = smoother)
+    // Adjusted based on typical 60fps frame rate
+    float smoothingFactor = 8.0f * deltaTime; // Reaches ~95% of target in ~0.5 seconds
+
+    // Clamp smoothing to prevent overshooting on frame drops
+    if (smoothingFactor > 1.0f) smoothingFactor = 1.0f;
+
+    // Interpolate critical gauges (faster for responsiveness)
+    float fastSmoothing = 12.0f * deltaTime;
+    if (fastSmoothing > 1.0f) fastSmoothing = 1.0f;
+
+    data->displaySpeed = lerp(data->displaySpeed, (float)data->speed, fastSmoothing);
+    data->displayRPM = lerp(data->displayRPM, (float)data->rpm, fastSmoothing);
+
+    // Interpolate other values (slower for stability)
+    data->displayThrottle = lerp(data->displayThrottle, (float)data->throttle, smoothingFactor);
+    data->displayEngineLoad = lerp(data->displayEngineLoad, (float)data->engineLoad, smoothingFactor);
+
+    // Temperature values interpolate very slowly (they change slowly in reality)
+    float slowSmoothing = 4.0f * deltaTime;
+    if (slowSmoothing > 1.0f) slowSmoothing = 1.0f;
+
+    data->displayCoolantTemp = lerp(data->displayCoolantTemp, (float)data->coolantTemp, slowSmoothing);
+    data->displayIntakeTemp = lerp(data->displayIntakeTemp, (float)data->intakeTemp, slowSmoothing);
 }

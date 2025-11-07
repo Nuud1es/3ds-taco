@@ -11,7 +11,8 @@ A Nintendo 3DS homebrew application that displays real-time car telemetry data f
 - **Analog Dials with Numeric Displays**: Top screen features dual analog gauges showing:
   - Speed (MPH) with large numeric readout
   - Engine RPM (x100) with large numeric readout
-  - Animated needles that respond to real-time data
+  - Smooth animated needles with intelligent interpolation
+  - Compensates for slow OBD adapter refresh rates
 - **Comprehensive Telemetry Panels**: Bottom screen displays six data panels with values:
   - Throttle position (%)
   - Coolant temperature (°F)
@@ -20,6 +21,10 @@ A Nintendo 3DS homebrew application that displays real-time car telemetry data f
   - Maximum speed for current trip (MPH)
   - Maximum RPM for current trip
 - **Trip Statistics**: Automatically tracks highest speed and RPM reached
+- **Smart Data Interpolation**: Smooth transitions between sensor readings
+  - Compensates for slow OBD-II adapter refresh rates
+  - Different smoothing for different data types (fast for RPM/speed, slow for temperature)
+  - Maintains responsiveness while eliminating jumpy displays
 - **Professional Text Rendering**: Citro2D-powered UI with smooth fonts and labels
 
 ## Requirements

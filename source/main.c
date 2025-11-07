@@ -39,10 +39,16 @@ int main(int argc, char **argv)
     bool connected = false;
     int sockfd = -1;
     u64 lastUpdate = 0;
+    u64 lastFrameTime = osGetTime();
 
     // Main loop
     while (aptMainLoop())
     {
+        // Calculate delta time for smooth interpolation
+        u64 currentTime = osGetTime();
+        float deltaTime = (currentTime - lastFrameTime) / 1000.0f; // Convert to seconds
+        lastFrameTime = currentTime;
+
         hidScanInput();
         u32 kDown = hidKeysDown();
 
@@ -63,10 +69,15 @@ int main(int argc, char **argv)
             obdData.maxRPM = 0;
         }
 
-        // Update telemetry data periodically
-        if (connected && (osGetTime() - lastUpdate) > 100) {
+        // Update telemetry data periodically (every 100ms)
+        if (connected && (currentTime - lastUpdate) > 100) {
             updateOBDData(sockfd, &obdData);
-            lastUpdate = osGetTime();
+            lastUpdate = currentTime;
+        }
+
+        // Interpolate display values every frame for smooth animation
+        if (connected) {
+            interpolateOBDData(&obdData, deltaTime);
         }
 
         // Render UI (handles frame begin/end internally)
